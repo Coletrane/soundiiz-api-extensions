@@ -11,7 +11,7 @@ import {HttpStatusCode} from 'axios'
  */
 let cachedConfig = null
 
-const CONFIG_PATH = './config.json'
+const CONFIG_PATH = '../config.json'
 
 export function getConfig() {
 	if (!_.isNil(cachedConfig)) return cachedConfig
