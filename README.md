@@ -17,7 +17,7 @@ Check them out at [soundiiz.com](https://soundiiz.com/).
 ### Node Implementation:
 - Install Node.js version >=21.5.0: https://nodejs.org/en/download/
 - Install the dependencies: `npm install`
-- Run the script: `node index.js`
+- Run the script: `node main.js`
 ### Kotlin Implementation (Coming Soon):
 - Install Java JDK version >=11: https://www.oracle.com/java/technologies/downloads/#java11
 - Install Kotlin version >=1.5.31: https://kotlinlang.org/docs/jvm-get-started.html

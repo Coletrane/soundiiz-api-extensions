@@ -10,19 +10,40 @@ import {HttpStatusCode} from 'axios'
  * @property {string} soundiizCookie - The Soundiiz cookie.
  */
 let cachedConfig = null
+const DEFAULT_CONFIG_PATH = '../config.json'
+/**
+ * The path to the config file.
+ * @type {string}
+ */
+let configPath = DEFAULT_CONFIG_PATH
 
-const CONFIG_PATH = '../config.json'
+/**
+ * Sets the path to the config file.
+ * @param path {string}
+ */
+export function setConfigPath(path) {
+	configPath = path
+}
+
+/**
+ * Gets the config from the config file or the cached config if it has already been loaded.
+ * @return {Config| {}}
+ */
 
 export function getConfig() {
 	if (!_.isNil(cachedConfig)) return cachedConfig
 
-	const config = fs.readFileSync(CONFIG_PATH)
+	const config = fs.readFileSync(configPath)
 	cachedConfig = JSON.parse(config)
-	return cachedConfig
+	return cachedConfig ?? {}
 }
 
+/**
+ * Saves the given config to the config file.
+ * @param config {Config}
+ */
 export function saveConfig(config) {
-	fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 4))
+	fs.writeFileSync(configPath, JSON.stringify(config, null, 4))
 }
 
 

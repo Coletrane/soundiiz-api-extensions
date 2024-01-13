@@ -6,7 +6,8 @@ import {
 import {PLATFORM, SOUNDIIZ_BATCH_METHOD, SOUNDIIZ_ERROR_CODES} from './constants.js'
 import _ from 'lodash'
 import chalk from 'chalk'
-import {post} from 'axios'
+import {post, get} from './http.js'
+import {setConfigPath} from './config.js'
 
 /**
  *
@@ -187,5 +188,6 @@ async function batchTransfer(sourcePlatform, destPlatform, playlistIds) {
 
 export default {
 	runSyncs,
-	batchTransfer
+	batchTransfer,
+	setConfigPath
 }

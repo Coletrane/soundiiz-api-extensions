@@ -157,5 +157,5 @@ hs_err_pid*
 replay_pid*
 
 config.json
-
+.gradle
 .idea/

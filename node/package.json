@@ -1,6 +1,8 @@
 {
   "name": "soundiiz-api-extensions",
   "version": "1.0.0",
+  "main": "index.js",
+  "deescription": "Additional functionalities and scripts designed to enhance and extend the capabilities of the Soundiiz API.",
   "engines": {
     "node": ">=21.5.0"
   },
