@@ -1,6 +1,8 @@
+//TODO: add typescript types
+
 // Domain objects
 /**
- * @typedef {Object} SoundiizPlaylist
+ * @typedef {Object} SoundiizPlaylistMetadata
  * @property {string} id - The playlist ID.
  * @property {string} platform - The platform of the playlist.
  * @property {string} title - The title of the playlist.
@@ -35,11 +37,36 @@
  * @property {boolean} isCanceled - Indicates whether the sync is canceled.
  */
 
+/**
+ * Represents a music track from Soundiiz
+ * @typedef {Object} SoundiizTrackMetadata
+ * @property {keyof SoundiizPlatform} platform - The platform identifier (e.g., 'spotify', 'applemusic', etc.).
+ * @property {string} type - The type of the item, typically 'track'.
+ * @property {string} id - The unique identifier for the track.
+ * @property {string} title - The title of the track.
+ * @property {string} artist - The name of the artist.
+ * @property {?string} artistLink - A link to the artist's page on the streaming platform, if available.
+ * @property {string} album - The name of the album the track is from.
+ * @property {string} albumLink - A link to the album on the streaming platform.
+ * @property {?string} isrc - The International Standard Recording Code of the track, if available.
+ * @property {?number} bpm - The beats per minute of the track, if available.
+ * @property {string} duration - The duration of the track in seconds.
+ * @property {string} trackLink - A direct link to the track on the streaming platform.
+ * @property {?string} preview - A link to a preview of the track, if available.
+ * @property {string} picture - A link to the track's album cover image.
+ * @property {?string} addedDate - The date when the track was added to the platform or a playlist, if available.
+ * @property {?string} addedBy - The identifier of the user who added the track, if available.
+ * @property {string} position - The track's position in the album or playlist.
+ * @property {Array<string>} shareUrls - A list of URLs for sharing the track.
+ * @property {?boolean} isFound - Indicates whether the track was found on the platform, if applicable.
+ */
+
+
 // API Request Payloads
 /**
  * @typedef {Object} SoundiizBatchTransferPayload
  * @property {string} dest - The destination platform.
- * @property {SoundiizPlaylist[]} playlists - An array of playlists.
+ * @property {SoundiizPlaylistMetadata[]} playlists - An array of playlists.
  * @property {Object[]} albums - An array of albums.
  * @property {Object[]} artists - An array of artists.
  * @property {Object[]} tracks - An array of tracks.
@@ -61,10 +88,18 @@
 
 /**
  * @typedef {Object} SoundiizPlaylistResponse
- * @property {SoundiizPlaylist[]} data
+ * @property {SoundiizPlaylistMetadata[]} data
  */
 
 /**
  * @typedef {Object} SoundiizBatchTransferResponse
  * @property {Object<'batch', SoundiizBatch>} data
+ */
+
+/**
+ * @typedef {Object} SoundiizPlaylistResponse
+ * @property {{
+ *     playlist: SoundiizPlaylistMetadata,
+ *     tracks: SoundiizTrackMetadata[]
+ * }} data
  */

@@ -1,38 +1,5 @@
-import {
-	AUTOMATION_ENDPOINT, BATCH_ADD_ENDPOINT, SOUNDIIZ_API_BASE_URL,
-	SOUNDIIZ_WEBAPI_BASE_URL, SYNCS_ENDPOINT,
-	SYNCS_EXEC_ENDPOINT,
-	USER_PLATFORMS_ENDPOINT
-} from './constants.js'
 import readline from 'readline'
 import {getConfig} from './config.js'
-
-// All of these endpoint functions should be callable endpoints only
-
-/**
- * @param syncId {number}
- */
-export function getSyncEndpoint(syncId) {
-	return `${SOUNDIIZ_API_BASE_URL}/${SYNCS_ENDPOINT}/${syncId}`
-}
-/**
- * @param syncId {number}
- */
-export function getSyncExecEndpoint(syncId) {
-	return `${getSyncEndpoint(syncId)}/${SYNCS_EXEC_ENDPOINT}`
-}
-
-export function getAddBatchEndpoint() {
-	return `${SOUNDIIZ_WEBAPI_BASE_URL}/${AUTOMATION_ENDPOINT}/${BATCH_ADD_ENDPOINT}`
-}
-
-/**
- *
- * @param platform {keyof SoundiizPlatform}
- */
-export function getPlaylistsEndpoint(platform) {
-	return `${SOUNDIIZ_API_BASE_URL}/${USER_PLATFORMS_ENDPOINT}/${platform}/playlists`
-}
 
 export function getAuthorizationHeader() {
 	return `Bearer ${getConfig().soundiizAccessToken}`

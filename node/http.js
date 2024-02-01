@@ -63,6 +63,7 @@ async function executeRequest(requestFunction) {
 async function handleResponse(response) {
 	const newCookiePasted = await promptForPasteNewCookieIfNeeded(response)
 
+	// FIXME: new cookie being pasted isn't leading to retried request
 	if (response.status === HttpStatusCode.Ok &&
 		_.isNil(response?.data?.error)) return Promise.resolve(newCookiePasted)
 

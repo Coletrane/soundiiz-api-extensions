@@ -1,13 +1,15 @@
 import {
-	getAddBatchEndpoint, getAuthorizationHeader, getCookie,
-	getPlaylistsEndpoint, getSoundiizErrorCode, getSoundiizErrorMessage,
-	getSyncExecEndpoint, waitFor1Minute
+	getAuthorizationHeader, getCookie,
+	getSoundiizErrorCode, getSoundiizErrorMessage, waitFor1Minute
 } from './utilities.js'
 import {PLATFORM, SOUNDIIZ_BATCH_METHOD, SOUNDIIZ_ERROR_CODES} from './constants.js'
 import _ from 'lodash'
 import chalk from 'chalk'
-import {post, get} from './http.js'
+import {get, post} from './http.js'
 import {setConfigPath} from './config.js'
+import {
+	getAddBatchEndpoint, getPlaylistEndpoint, getPlaylistsEndpoint
+} from './endpoints.js'
 
 /**
  *
@@ -93,14 +95,14 @@ async function runSyncs(syncIds) {
 /**
  * Cache of playlists by platform, so we don't have to request Soundiiz for the same playlists
  * over and over
- * @type {{ [key: keyof SoundiizPlatform]: SoundiizPlaylist[]}}
+ * @type {{ [key: keyof SoundiizPlatform]: SoundiizPlaylistMetadata[]}}
  */
 const playlistsByPlatformCache = { }
 
 /**
  * GETs the playlists from the Soundiiz API for the given platform
  * @param platform {keyof SoundiizPlatform} The platform to get playlists for
- * @return {Promise<SoundiizPlaylist[] | SoundiizErrorResponse>}
+ * @return {Promise<SoundiizPlaylistMetadata[] | SoundiizErrorResponse>}
  * A promise that resolves to the response with the playlists
  */
 async function getPlaylists(platform) {
@@ -156,8 +158,8 @@ async function getAllPlaylistsAndUpdateCache() {
  * @param sourcePlatform {keyof SoundiizPlatform} The platform to transfer from
  * @param destPlatform {keyof SoundiizPlatform} The platform to transfer to
  * @param playlistIds {string[]} The IDs of the playlists to transfer
- * @return {Promise<SoundiizBatchTransferResponse>} A promise that resolves when the batch
- * transfer is kicked off, NOT when it is complete!
+ * @return {Promise<AxiosResponse<SoundiizBatchTransferResponse>>} A promise that resolves
+ * when the batch transfer is kicked off, NOT when it is complete!
  */
 async function batchTransfer(sourcePlatform, destPlatform, playlistIds) {
 	await getAllPlaylistsAndUpdateCache()
@@ -176,18 +178,34 @@ async function batchTransfer(sourcePlatform, destPlatform, playlistIds) {
 		tracks: []
 	}
 	const endpoint = getAddBatchEndpoint()
-	/**
-	 * @type {AxiosResponse<SoundiizBatchTransferResponse>}
-	 */
-	return await post(endpoint, payload, {
+
+	return post(endpoint, payload, {
 		headers: {
 			Cookie: getCookie()
 		}
 	})
 }
 
+/**
+ * Gets the metadata and tracks for the given playlist from the given platform.
+ * @param platform {keyof SoundiizPlatform} The platform to get the playlist from
+ * @param playlistId {string} The ID of the playlist to get
+ * @return {Promise<AxiosResponse<SoundiizPlaylistMetadata | SoundiizErrorResponse>>}
+ * A promise that resolves to the response with the playlist metadata and tracks
+ */
+export async function getPlaylistData(platform, playlistId) {
+	const endpoint = getPlaylistEndpoint(platform, playlistId)
+
+	return get(endpoint, {
+		headers: {
+			Authorization: getAuthorizationHeader()
+		}
+	})
+}
+
 export default {
+	setConfigPath,
 	runSyncs,
 	batchTransfer,
-	setConfigPath
+	getPlaylistData
 }
